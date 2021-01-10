@@ -1,0 +1,195 @@
+// Products
+### Get products
+GET http://localhost:5000/api/v1/products?categories=5ff1e2bf40a9e61a74269720,5ff1dbd8c871e8157466c892
+
+### Get product count
+GET http://localhost:5000/api/v1/products/count
+
+### Get featured products
+GET http://localhost:5000/api/v1/products/featured/5/ddd
+
+### Add product
+POST http://localhost:5000/api/v1/products
+Content-Type: application/json
+
+{
+    "name": "product 4",
+    "description": "this is product 4",
+    "richDescription": "the product has a good quality",
+    "image": "product1/image.jpg",
+    "brand": "product 1 brand",
+    "price": 25,
+    "category": "5ff1e2bf40a9e61a74269720",
+    "countInStock": 10,
+    "rating": 5,
+    "numReviews": 22,
+    "isFeatured": true
+}
+
+### Get product
+GET http://localhost:5000/api/v1/products/5ff1e17b2db5a014b8e61c5e
+
+### Update product
+PUT http://localhost:5000/api/v1/products/5ff1e17b2db5a014b8e61c5e
+Content-Type: application/json
+
+{
+    "name": "product 1 updated",
+    "description": "this is product 1",
+    "richDescription": "the product has a good quality",
+    "image": "product1/image.jpg",
+    "brand": "product 1 brand",
+    "price": 25,
+    "category": "5ff1e2bf40a9e61a74269720",
+    "countInStock": 10,
+    "rating": 5,
+    "numReviews": 22,
+    "isFeatured": true
+}
+
+### Delete product
+DELETE http://localhost:5000/api/v1/products/5ff1e17b2db5a014b8e61c5e
+
+
+
+// Categories
+### Get categories
+GET http://localhost:5000/api/v1/categories
+
+### Get category
+GET http://localhost:5000/api/v1/categories/5ff1dbd8c871e8157466c89
+
+### Add category
+POST http://localhost:5000/api/v1/categories
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjJiNGJmNDU3ZTM4MWUyODhmZDI4ZCIsImlhdCI6MTYwOTc1MDMyMywiZXhwIjoxNjEyMzQyMzIzfQ.wMZXTXGoY_AXb9yuXWdbpp6eZgObplIsHZ5oKPhqIAg
+
+
+{
+    "name": "health",
+    "icon": "icon-health",
+    "color": "#2c40f4"
+}
+
+### Delete category
+DELETE http://localhost:5000/api/v1/categories/5ff1dbd8c871e8157466c892
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjJkNmEwMDNjNWY3MWIwODlmZjdmOSIsImlhdCI6MTYwOTc1MDE5MiwiZXhwIjoxNjEyMzQyMTkyfQ.b8PcdCbYjSOBZzYr_xbr3FOTbKM0v82OYpYHXFg1P0g
+
+### Update category
+PUT http://localhost:5000/api/v1/categories/5ff1dbd8c871e8157466c892
+Content-Type: application/json
+
+{
+    "name": "health",
+    "icon": "icon-health",
+    "color": "#555"
+}
+
+
+// Orders
+### Get orders
+GET http://localhost:5000/api/v1/orders
+
+### Get order
+GET http://localhost:5000/api/v1/orders/5ff355312282041d60ae810d
+
+### Get total sales
+GET http://localhost:5000/api/v1/orders/totalsales
+
+### Get order count
+GET http://localhost:5000/api/v1/orders/count
+
+### Add order
+POST http://localhost:5000/api/v1/orders
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjJkNmEwMDNjNWY3MWIwODlmZjdmOSIsImlhdCI6MTYwOTc1MDE5MiwiZXhwIjoxNjEyMzQyMTkyfQ.b8PcdCbYjSOBZzYr_xbr3FOTbKM0v82OYpYHXFg1P0g
+
+{
+    "orderItems": [
+        {
+            "product": "5ff1e8602544c701e8696fe3",
+            "quantity": 5
+        },
+        {
+            "product": "5ff1f19c9a807e195c3deb98",
+            "quantity": 2
+        }
+    ],
+    "shippingAddress1": "jl. bardan nadi, mempawah timur",
+    "shippingAddress2": "kecamatan mempawah timur, kabupaten mempawah",
+    "city": "mempawah",
+    "zip": "012345",
+    "country": "indonesia",
+    "phone": "089694624299"
+}
+
+### Update order status
+PUT http://localhost:5000/api/v1/orders/5ff355312282041d60ae810d
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjJiNGJmNDU3ZTM4MWUyODhmZDI4ZCIsImlhdCI6MTYwOTgyMDk3OCwiZXhwIjoxNjEyNDEyOTc4fQ.IJnBD87u6_-docIA53USX6trkt2iOZNR4_nsqYnrNKo
+
+{
+    "status": "shipped"
+}
+
+### Delete order
+DELETE http://localhost:5000/api/v1/orders/5ff3c92b759b6d0c748a5505
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjJiNGJmNDU3ZTM4MWUyODhmZDI4ZCIsImlhdCI6MTYwOTgyMDk3OCwiZXhwIjoxNjEyNDEyOTc4fQ.IJnBD87u6_-docIA53USX6trkt2iOZNR4_nsqYnrNKo
+
+// Users
+### Get users
+GET http://localhost:5000/api/v1/users
+
+### Get user
+GET http://localhost:5000/api/v1/users/5ff2b1196a3d1b10a077cffc
+
+### Get user count
+GET http://localhost:5000/api/v1/users/count
+
+### Add user
+POST http://localhost:5000/api/v1/users
+Content-Type: application/json
+
+{
+    "name": "john doe",
+    "email": "johndoe@gmail.com",
+    "password": "johndoe",
+    "phone": "089694624298",
+    "isAdmin": false,
+    "street": "jl. bardan nadi",
+    "apartment": "desa pasir panjang",
+    "zip": "012345",
+    "city": "mempawah",
+    "country": "indonesia"
+}
+
+### Update user
+PUT http://localhost:5000/api/v1/users
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjJiNGJmNDU3ZTM4MWUyODhmZDI4ZCIsImlhdCI6MTYwOTc0OTk2OCwiZXhwIjoxNjEyMzQxOTY4fQ.SnJtYFkI7XBE1vNMmLU0iuX-eCbQPZ5KCkuhTMXY8ck
+
+{
+    "name": "abdur rahim",
+    "email": "abdoerrahiem@gmail.com",
+    "password": "abdoerrahiem",
+    "phone": "089694624299",
+    "isAdmin": true,
+    "street": "jl. bardan nadi",
+    "apartment": "desa pasir panjang",
+    "zip": "012345",
+    "city": "mempawah",
+    "country": "indonesia"
+}
+
+### Delete user
+DELETE http://localhost:5000/api/v1/users/5ff2b1196a3d1b10a077cffc
+
+### Login user
+POST http://localhost:5000/api/v1/users/login
+Content-Type: application/json
+
+{
+    "email": "abdoerrahiem@gmail.com",
+    "password": "abdoerrahiem"
+}
