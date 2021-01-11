@@ -1,25 +1,23 @@
+const asyncHandler = require('express-async-handler')
+const mongoose = require('mongoose')
 const Product = require('../../models/product')
 
-const getProduct = async (req, res) => {
+const getProduct = asyncHandler(async (req, res) => {
   const { id } = req.params
 
-  try {
-    const product = await Product.findById(id).populate('category')
-
-    if (!product)
-      return res
-        .status(404)
-        .json({ success: false, message: 'Product not found.' })
-
-    res.json(product)
-  } catch (error) {
-    if (error.kind === 'ObjectId')
-      return res
-        .status(404)
-        .json({ success: false, message: 'Product not found.' })
-
-    res.status(500).json({ error, success: false })
+  if (!mongoose.isValidObjectId(id)) {
+    res.status(404)
+    throw new Error('Product not found.')
   }
-}
+
+  const product = await Product.findById(id).populate('category')
+
+  if (!product) {
+    res.status(404)
+    throw new Error('Product not found.')
+  }
+
+  res.json(product)
+})
 
 module.exports = getProduct

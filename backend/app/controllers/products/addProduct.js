@@ -1,7 +1,8 @@
+const asyncHandler = require('express-async-handler')
 const Product = require('../../models/product')
 const Category = require('../../models/category')
 
-const addProduct = async (req, res) => {
+const addProduct = asyncHandler(async (req, res) => {
   const {
     name,
     description,
@@ -15,46 +16,39 @@ const addProduct = async (req, res) => {
     isFeatured,
   } = req.body
 
-  try {
-    const existedCategory = await Category.findById(category)
-    if (!existedCategory)
-      return res
-        .status(400)
-        .json({ success: false, message: 'Invalid category.' })
-
-    const file = req.file
-    if (!file)
-      return res
-        .status(400)
-        .json({ success: false, message: 'No image available.' })
-
-    const image = `${req.protocol}://${req.get('host')}/public/uploads/${
-      req.file.filename
-    }`
-
-    const product = await Product.create({
-      name,
-      description,
-      richDescription,
-      image,
-      brand,
-      price,
-      category,
-      countInStock,
-      rating,
-      numReviews,
-      isFeatured,
-    })
-
-    res.status(201).json(product)
-  } catch (error) {
-    if (error.kind === 'ObjectId')
-      return res
-        .status(404)
-        .json({ success: false, message: 'Invalid category.' })
-
-    res.status(500).json({ error, success: false })
+  const existedCategory = await Category.findById(category)
+  if (!existedCategory) {
+    res.status(400)
+    throw new Error('Invalid category.')
   }
-}
+
+  const file = req.file
+  if (!file) {
+    res.status(400)
+    throw new Error('Image not found.')
+  }
+
+  const image = `${req.protocol}://${req.get('host')}/public/uploads/${
+    req.file.filename
+  }`
+
+  const product = await Product.create({
+    name,
+    description,
+    richDescription,
+    image,
+    brand,
+    price,
+    category,
+    countInStock,
+    rating,
+    numReviews,
+    isFeatured,
+  })
+
+  res
+    .status(201)
+    .json({ success: true, message: 'Product added successfully.', product })
+})
 
 module.exports = addProduct

@@ -1,15 +1,12 @@
+const asyncHandler = require('express-async-handler')
 const Order = require('../../models/order')
 
-const getTotalSales = async (req, res) => {
-  try {
-    const totalSales = await Order.aggregate([
-      { $group: { _id: null, totalsales: { $sum: '$totalPrice' } } },
-    ])
+const getTotalSales = asyncHandler(async (req, res) => {
+  const totalSales = await Order.aggregate([
+    { $group: { _id: null, totalsales: { $sum: '$totalPrice' } } },
+  ])
 
-    res.json({ totalSales: totalSales.pop().totalsales })
-  } catch (error) {
-    res.status(500).json({ error, success: false })
-  }
-}
+  res.json({ totalSales: totalSales.pop().totalsales })
+})
 
 module.exports = getTotalSales

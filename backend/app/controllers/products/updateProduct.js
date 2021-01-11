@@ -1,7 +1,9 @@
+const asyncHandler = require('express-async-handler')
+const mongoose = require('mongoose')
 const Product = require('../../models/product')
 const Category = require('../../models/category')
 
-const updateProduct = async (req, res) => {
+const updateProduct = asyncHandler(async (req, res) => {
   const { id } = req.params
   const {
     name,
@@ -17,45 +19,41 @@ const updateProduct = async (req, res) => {
     isFeatured,
   } = req.body
 
-  try {
-    const existedCategory = await Category.findById(category)
-    if (!existedCategory)
-      return res
-        .status(400)
-        .json({ success: false, message: 'Invalid category.' })
-
-    const product = await Product.findByIdAndUpdate(
-      id,
-      {
-        name,
-        description,
-        richDescription,
-        image,
-        brand,
-        price,
-        category,
-        countInStock,
-        rating,
-        numReviews,
-        isFeatured,
-      },
-      { new: true }
-    )
-
-    if (!product)
-      return res
-        .status(404)
-        .json({ success: false, message: 'Product not found.' })
-
-    res.json(product)
-  } catch (error) {
-    if (error.kind === 'ObjectId')
-      return res
-        .status(404)
-        .json({ success: false, message: 'Product/Category not found.' })
-
-    res.status(500).json({ error, success: false })
+  if (!mongoose.isValidObjectId(id)) {
+    res.status(404)
+    throw new Error('Product not found.')
   }
-}
+
+  const existedCategory = await Category.findById(category)
+  if (!existedCategory) {
+    res.status(400)
+    throw new Error('Invalid category.')
+  }
+
+  const product = await Product.findByIdAndUpdate(
+    id,
+    {
+      name,
+      description,
+      richDescription,
+      image,
+      brand,
+      price,
+      category,
+      countInStock,
+      rating,
+      numReviews,
+      isFeatured,
+    },
+    { new: true }
+  )
+
+  if (!product) {
+    res.status(404)
+    throw new Error('Product not found.')
+  }
+
+  res.json({ success: true, message: 'Product updated successfully', product })
+})
 
 module.exports = updateProduct

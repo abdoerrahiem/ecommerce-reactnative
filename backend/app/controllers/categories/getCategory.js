@@ -1,25 +1,23 @@
+const mongoose = require('mongoose')
+const asyncHandler = require('express-async-handler')
 const Category = require('../../models/category')
 
-const getCategory = async (req, res) => {
+const getCategory = asyncHandler(async (req, res) => {
   const { id } = req.params
 
-  try {
-    const category = await Category.findById(id)
-
-    if (!category)
-      return res
-        .status(404)
-        .json({ success: false, message: 'Category not found.' })
-
-    res.json(category)
-  } catch (error) {
-    if (error.kind === 'ObjectId')
-      return res
-        .status(404)
-        .json({ success: false, message: 'Category not found.' })
-
-    res.status(500).json({ error, success: false })
+  if (!mongoose.isValidObjectId(id)) {
+    res.status(404)
+    throw new Error('Category not found.')
   }
-}
+
+  const category = await Category.findById(id)
+
+  if (!category) {
+    res.status(404)
+    throw new Error('Category not found.')
+  }
+
+  res.json(category)
+})
 
 module.exports = getCategory

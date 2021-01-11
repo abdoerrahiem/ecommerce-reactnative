@@ -57,7 +57,7 @@ DELETE http://localhost:5000/api/v1/products/5ff1e17b2db5a014b8e61c5e
 GET http://localhost:5000/api/v1/categories
 
 ### Get category
-GET http://localhost:5000/api/v1/categories/5ff1dbd8c871e8157466c89
+GET http://localhost:5000/api/v1/categories/5ff1e2bf40a9e61a74269720
 
 ### Add category
 POST http://localhost:5000/api/v1/categories
@@ -66,22 +66,23 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjJiNGJmN
 
 
 {
-    "name": "health",
-    "icon": "icon-health",
-    "color": "#2c40f4"
+    "name": "food",
+    "icon": "icon-food",
+    "color": "#7c3de9"
 }
 
 ### Delete category
-DELETE http://localhost:5000/api/v1/categories/5ff1dbd8c871e8157466c892
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjJkNmEwMDNjNWY3MWIwODlmZjdmOSIsImlhdCI6MTYwOTc1MDE5MiwiZXhwIjoxNjEyMzQyMTkyfQ.b8PcdCbYjSOBZzYr_xbr3FOTbKM0v82OYpYHXFg1P0g
+DELETE http://localhost:5000/api/v1/categories/5ffb441d9a2127047c66899c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjJiNGJmNDU3ZTM4MWUyODhmZDI4ZCIsImlhdCI6MTYwOTc1MDMyMywiZXhwIjoxNjEyMzQyMzIzfQ.wMZXTXGoY_AXb9yuXWdbpp6eZgObplIsHZ5oKPhqIAg
 
 ### Update category
-PUT http://localhost:5000/api/v1/categories/5ff1dbd8c871e8157466c892
+PUT http://localhost:5000/api/v1/categories/5ffb4a46e865c31220436ba6
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjJiNGJmNDU3ZTM4MWUyODhmZDI4ZCIsImlhdCI6MTYwOTc1MDMyMywiZXhwIjoxNjEyMzQyMzIzfQ.wMZXTXGoY_AXb9yuXWdbpp6eZgObplIsHZ5oKPhqIAg
 
 {
-    "name": "health",
-    "icon": "icon-health",
+    "name": "food update",
+    "icon": "icon-food",
     "color": "#555"
 }
 

@@ -1,7 +1,8 @@
+const asyncHandler = require('express-async-handler')
 const Order = require('../../models/order')
 const OrderItem = require('../../models/order-item')
 
-const addOrder = async (req, res) => {
+const addOrder = asyncHandler(async (req, res) => {
   const {
     orderItems,
     shippingAddress1,
@@ -12,51 +13,49 @@ const addOrder = async (req, res) => {
     phone,
   } = req.body
 
-  try {
-    let orderItemIds = Promise.all(
-      orderItems.map(async (item) => {
-        const orderItem = await OrderItem.create({
-          quantity: item.quantity,
-          product: item.product,
-        })
-
-        return orderItem.id
+  let orderItemIds = Promise.all(
+    orderItems.map(async (item) => {
+      const orderItem = await OrderItem.create({
+        quantity: item.quantity,
+        product: item.product,
       })
-    )
 
-    orderItemIds = await orderItemIds
-
-    let totalPrices = await Promise.all(
-      orderItemIds.map(async (item) => {
-        const orderItem = await OrderItem.findById(item).populate(
-          'product',
-          'price'
-        )
-
-        const totalPrice = orderItem.product.price * orderItem.quantity
-
-        return totalPrice
-      })
-    )
-
-    const totalPrice = totalPrices.reduce((a, b) => a + b, 0)
-
-    const order = await Order.create({
-      orderItems: orderItemIds,
-      shippingAddress1,
-      shippingAddress2,
-      city,
-      zip,
-      country,
-      phone,
-      totalPrice,
-      user: req.user.id,
+      return orderItem.id
     })
+  )
 
-    res.status(201).json(order)
-  } catch (error) {
-    res.status(500).json({ error, success: false })
-  }
-}
+  orderItemIds = await orderItemIds
+
+  let totalPrices = await Promise.all(
+    orderItemIds.map(async (item) => {
+      const orderItem = await OrderItem.findById(item).populate(
+        'product',
+        'price'
+      )
+
+      const totalPrice = orderItem.product.price * orderItem.quantity
+
+      return totalPrice
+    })
+  )
+
+  const totalPrice = totalPrices.reduce((a, b) => a + b, 0)
+
+  const order = await Order.create({
+    orderItems: orderItemIds,
+    shippingAddress1,
+    shippingAddress2,
+    city,
+    zip,
+    country,
+    phone,
+    totalPrice,
+    user: req.user.id,
+  })
+
+  res
+    .status(201)
+    .json({ success: true, message: 'Order added successfully.', order })
+})
 
 module.exports = addOrder

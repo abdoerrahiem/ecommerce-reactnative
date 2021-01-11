@@ -1,6 +1,7 @@
+const asyncHandler = require('express-async-handler')
 const User = require('../../models/user')
 
-const addUser = async (req, res) => {
+const addUser = asyncHandler(async (req, res) => {
   const {
     name,
     email,
@@ -14,31 +15,29 @@ const addUser = async (req, res) => {
     country,
   } = req.body
 
-  try {
-    let user = await User.findOne({ email })
+  let user = await User.findOne({ email })
 
-    if (user)
-      return res
-        .status(400)
-        .json({ success: false, message: 'User already exists.' })
-
-    user = await User.create({
-      name,
-      email,
-      password,
-      phone,
-      isAdmin,
-      street,
-      apartment,
-      zip,
-      city,
-      country,
-    })
-
-    res.status(201).json(user)
-  } catch (error) {
-    res.status(500).json({ error, success: false })
+  if (user) {
+    res.status(400)
+    throw new Error('User already exists.')
   }
-}
+
+  user = await User.create({
+    name,
+    email,
+    password,
+    phone,
+    isAdmin,
+    street,
+    apartment,
+    zip,
+    city,
+    country,
+  })
+
+  res
+    .status(201)
+    .json({ success: true, message: 'User registered successfully.', user })
+})
 
 module.exports = addUser
