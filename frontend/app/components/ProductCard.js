@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import {useNavigation} from '@react-navigation/native'
+import {useDispatch, useSelector} from 'react-redux'
+import {addToCart} from '../store/actions/cartActions'
 
 const {width} = Dimensions.get('window')
 
@@ -16,6 +18,10 @@ const ProductCard = ({item}) => {
   const {name, price, image, countInStock} = item
 
   const {navigate} = useNavigation()
+
+  const dispatch = useDispatch()
+
+  // const cartItems = useSelector((state) => state.cartReducers)
 
   return (
     <TouchableOpacity
@@ -36,7 +42,11 @@ const ProductCard = ({item}) => {
         <Text style={styles.price}>${price}</Text>
         {countInStock > 0 ? (
           <View style={{marginBottom: 60}}>
-            <Button title="Add" color="green" />
+            <Button
+              title="Add"
+              color="green"
+              onPress={() => dispatch(addToCart({quantity: 1, item}))}
+            />
           </View>
         ) : (
           <Text style={{marginTop: 20}}>Currently Unavailable</Text>

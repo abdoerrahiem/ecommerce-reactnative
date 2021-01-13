@@ -1,11 +1,15 @@
 import React, {useState} from 'react'
 import {View, Image, StyleSheet, Text, ScrollView, Button} from 'react-native'
 import {Left, Right, Container, H1} from 'native-base'
+import {useDispatch} from 'react-redux'
+import {addToCart} from '../store/actions/cartActions'
 
 const Product = ({route}) => {
   const {params} = route
   const [item, setItem] = useState(params.item)
   const [visibility, setVisibility] = useState('')
+
+  const dispatch = useDispatch()
 
   return (
     <Container style={styles.container}>
@@ -30,7 +34,10 @@ const Product = ({route}) => {
           <Text style={styles.price}>${item.price}</Text>
         </Left>
         <Right>
-          <Button title="Add" />
+          <Button
+            title="Add"
+            onPress={() => dispatch(addToCart({quantity: 1, item}))}
+          />
         </Right>
       </View>
     </Container>

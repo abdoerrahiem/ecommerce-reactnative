@@ -5,7 +5,7 @@ const cartReducers = (state = [], action) => {
 
   switch (type) {
     case types.ADD_TO_CART:
-      return {...state, payload}
+      return [...state, payload]
     case types.REMOVE_FROM_CART:
       return state.filter((cartItem) => cartItem !== payload)
     case types.CLEAR_CART:
