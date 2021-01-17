@@ -71,7 +71,10 @@ const Cart = () => {
               <Button title="Clear" onPress={() => dispatch(clearCart())} />
             </Right>
             <Right>
-              <Button title="Checkout" onPress={() => navigate('Checkout')} />
+              <Button
+                title="Checkout"
+                onPress={() => navigate('CheckoutNavigator')}
+              />
             </Right>
           </View>
         </Container>

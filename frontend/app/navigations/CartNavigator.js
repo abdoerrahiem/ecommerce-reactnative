@@ -3,7 +3,7 @@ import {View, Text} from 'react-native'
 import {createStackNavigator} from '@react-navigation/stack'
 
 import Cart from '../screens/Cart'
-import Checkout from '../screens/Checkout'
+import CheckoutNavigator from './CheckoutNavigator'
 
 const Stack = createStackNavigator()
 
@@ -13,10 +13,10 @@ const CartNavigator = () => {
       screenOptions={{animationEnabled: false, headerShown: false}}>
       <Stack.Screen name="Cart" component={Cart} />
       <Stack.Screen
-        name="Checkout"
-        component={Checkout}
+        name="CheckoutNavigator"
+        component={CheckoutNavigator}
         options={({route}) => ({
-          //   title: route.params.item.name,
+          title: 'Checkout',
           headerShown: true,
         })}
       />
