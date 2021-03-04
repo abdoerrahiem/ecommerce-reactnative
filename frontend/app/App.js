@@ -1,15 +1,22 @@
 import React from 'react'
 import {StatusBar} from 'react-native'
-import {Provider} from 'react-redux'
 import Navigations from './navigations'
+
+// Redux
+import {Provider} from 'react-redux'
 import store from './store'
+
+// Context
+import Auth from './context/store/auth'
 
 const App = () => {
   return (
-    <Provider store={store}>
-      <StatusBar barStyle="light-content" />
-      <Navigations />
-    </Provider>
+    <Auth>
+      <Provider store={store}>
+        <StatusBar barStyle="light-content" />
+        <Navigations />
+      </Provider>
+    </Auth>
   )
 }
 

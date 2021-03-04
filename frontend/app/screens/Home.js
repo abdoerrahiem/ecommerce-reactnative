@@ -1,14 +1,21 @@
-import React, {useState, useEffect} from 'react'
-import {View, StyleSheet, Dimensions, ScrollView} from 'react-native'
+import React, {useState, useEffect, useCallback} from 'react'
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native'
 import {Container, Header, Icon, Item, Input, Text} from 'native-base'
 import ProductCard from '../components/ProductCard'
 import HeaderComponent from '../components/Header'
 import SearchedProducts from '../components/SearchedProducts'
 import Banner from '../components/Banner'
 import CategoryFilter from '../components/CategoryFilter'
-
-const data = require('../data/products.json')
-const categoriesData = require('../data/categories.json')
+import axios from 'axios'
+import baseUrl from '../utils/baseUrl'
+import {useFocusEffect} from '@react-navigation/native'
+import Toast from 'react-native-toast-message'
 
 const {width, height} = Dimensions.get('window')
 
@@ -20,26 +27,43 @@ const Home = () => {
   const [productsCtg, setProductsCtg] = useState([])
   const [active, setActive] = useState()
   const [initialState, setInitialState] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    setProducts(data)
-    setProductsFiltered(data)
-    setProductsCtg(data)
-    setFocus(false)
-    setCategories(categoriesData)
-    setInitialState(data)
-    setActive(-1)
+  useFocusEffect(
+    useCallback(() => {
+      setFocus(false)
+      setActive(-1)
 
-    return () => {
-      setProducts([])
-      setProductsFiltered([])
-      setProductsCtg([])
-      setFocus()
-      setActive()
-      setCategories([])
-      setInitialState([])
-    }
-  }, [])
+      axios
+        .get(`${baseUrl}/products`)
+        .then((res) => {
+          setProducts(res.data)
+          setProductsFiltered(res.data)
+          setProductsCtg(res.data)
+          setInitialState(res.data)
+          setLoading(false)
+        })
+        .catch((err) => console.log('API Error'))
+
+      axios
+        .get(`${baseUrl}/categories`)
+        .then((res) => {
+          setCategories(res.data)
+          setLoading(false)
+        })
+        .catch((err) => console.log('API Error'))
+
+      return () => {
+        setProducts([])
+        setProductsFiltered([])
+        setProductsCtg([])
+        setFocus()
+        setActive()
+        setCategories([])
+        setInitialState([])
+      }
+    }, []),
+  )
 
   const openList = () => setFocus(true)
   const onBlur = () => setFocus(false)
@@ -48,64 +72,71 @@ const Home = () => {
     ctg === 'all'
       ? [setProductsCtg(initialState), setActive(true)]
       : [
-          setProductsCtg(products.filter((prod) => prod.category.$oid === ctg)),
+          setProductsCtg(products.filter((prod) => prod.category._id === ctg)),
           setActive(true),
         ]
 
   return (
     <>
       <HeaderComponent />
-      <Container>
-        <Header searchBar rounded>
-          <Item>
-            <Icon name="ios-search" />
-            <Input
-              placeholder="Search"
-              onFocus={openList}
-              onChangeText={(text) =>
-                setProductsFiltered(
-                  products.filter((prod) =>
-                    prod.name.toLowerCase().includes(text.toLowerCase()),
-                  ),
-                )
-              }
-            />
-            {focus && <Icon onPress={onBlur} name="ios-close" />}
-          </Item>
-        </Header>
-        {focus ? (
-          <SearchedProducts productsFiltered={productsFiltered} />
-        ) : (
-          <ScrollView>
-            <Banner />
-            <CategoryFilter
-              categories={categories}
-              changeCtg={changeCtg}
-              productsCtg={productsCtg}
-              active={active}
-              setActive={setActive}
-            />
-            {productsCtg.length > 0 ? (
-              <View style={styles.container}>
-                {productsCtg.map((item) => (
-                  <ProductCard item={item} key={item._id.$oid} />
-                ))}
-              </View>
-            ) : (
-              <View style={styles.center}>
-                <Text>No products found</Text>
-              </View>
-            )}
-          </ScrollView>
-        )}
-      </Container>
+      {loading ? (
+        <Container style={[styles.center, {backgroundColor: '#f2f2f2'}]}>
+          <ActivityIndicator size="large" color="red" />
+        </Container>
+      ) : (
+        <Container>
+          <Header searchBar rounded>
+            <Item>
+              <Icon name="ios-search" />
+              <Input
+                placeholder="Search"
+                onFocus={openList}
+                onChangeText={(text) =>
+                  setProductsFiltered(
+                    products.filter((prod) =>
+                      prod.name.toLowerCase().includes(text.toLowerCase()),
+                    ),
+                  )
+                }
+              />
+              {focus && <Icon onPress={onBlur} name="ios-close" />}
+            </Item>
+          </Header>
+          {focus ? (
+            <SearchedProducts productsFiltered={productsFiltered} />
+          ) : (
+            <ScrollView>
+              <Banner />
+              <CategoryFilter
+                categories={categories}
+                changeCtg={changeCtg}
+                productsCtg={productsCtg}
+                active={active}
+                setActive={setActive}
+              />
+              {productsCtg.length > 0 ? (
+                <View style={styles.container}>
+                  {productsCtg.map((item) => (
+                    <ProductCard item={item} key={item._id} />
+                  ))}
+                </View>
+              ) : (
+                <View style={styles.center}>
+                  <Text>No products found</Text>
+                </View>
+              )}
+            </ScrollView>
+          )}
+        </Container>
+      )}
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: height + 120,
+    // height: height + 120,
     width,
     flex: 1,
     flexDirection: 'row',

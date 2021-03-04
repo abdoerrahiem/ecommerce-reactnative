@@ -8,8 +8,9 @@ const CartItem = ({cart}) => {
       <Left>
         <Thumbnail
           source={{
-            uri:
-              'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png',
+            uri: cart.item.item.image
+              ? cart.item.item.image
+              : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png',
           }}
         />
       </Left>

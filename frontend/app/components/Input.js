@@ -1,19 +1,17 @@
 import React from 'react'
 import {StyleSheet, TextInput} from 'react-native'
 
-const Input = (props) => {
-  const {
-    placeholder,
-    name,
-    id,
-    value,
-    autoCorrect,
-    onChangeText,
-    onFocus,
-    secureTextEntry,
-    keyboardType,
-  } = props
-
+const Input = ({
+  placeholder,
+  name,
+  id,
+  value,
+  autoCorrect,
+  onChangeText,
+  onFocus,
+  secureTextEntry,
+  keyboardType,
+}) => {
   return (
     <TextInput
       style={styles.input}

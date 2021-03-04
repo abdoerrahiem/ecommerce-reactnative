@@ -9,8 +9,10 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import {useNavigation} from '@react-navigation/native'
-import {useDispatch, useSelector} from 'react-redux'
+import {useDispatch} from 'react-redux'
 import {addToCart} from '../store/actions/cartActions'
+import Toast from 'react-native-toast-message'
+import EasyButton from '../components/styledComponents/EasyButton'
 
 const {width} = Dimensions.get('window')
 
@@ -30,8 +32,9 @@ const ProductCard = ({item}) => {
       <Image
         style={styles.image}
         source={{
-          uri:
-            'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png',
+          uri: image
+            ? image
+            : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png',
         }}
         resizeMode="contain"
       />
@@ -42,11 +45,20 @@ const ProductCard = ({item}) => {
         <Text style={styles.price}>${price}</Text>
         {countInStock > 0 ? (
           <View style={{marginBottom: 60}}>
-            <Button
-              title="Add"
-              color="green"
-              onPress={() => dispatch(addToCart({quantity: 1, item}))}
-            />
+            <EasyButton
+              primary
+              onPress={() => {
+                dispatch(addToCart({quantity: 1, item}))
+
+                Toast.show({
+                  topOffset: 60,
+                  type: 'success',
+                  text1: `${name} added to cart`,
+                  text2: 'Go to your cart to complete your order',
+                })
+              }}>
+              <Text style={styles.buttonText}>Add</Text>
+            </EasyButton>
           </View>
         ) : (
           <Text style={{marginTop: 20}}>Currently Unavailable</Text>
@@ -93,6 +105,12 @@ const styles = StyleSheet.create({
     color: 'orange',
     marginTop: 10,
     textAlign: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    letterSpacing: 1.5,
   },
 })
 

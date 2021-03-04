@@ -23,6 +23,7 @@ import {SwipeListView} from 'react-native-swipe-list-view'
 import {removeFromCart, clearCart} from '../store/actions/cartActions'
 import Header from '../components/Header'
 import CartItem from '../components/CartItem'
+import EasyButton from '../components/styledComponents/EasyButton'
 
 const {height, width} = Dimensions.get('window')
 
@@ -68,13 +69,17 @@ const Cart = () => {
               <Text style={styles.price}>${total}</Text>
             </Left>
             <Right>
-              <Button title="Clear" onPress={() => dispatch(clearCart())} />
+              <EasyButton md danger onPress={() => dispatch(clearCart())}>
+                <Text style={styles.buttonText}>Clear</Text>
+              </EasyButton>
             </Right>
             <Right>
-              <Button
-                title="Checkout"
-                onPress={() => navigate('CheckoutNavigator')}
-              />
+              <EasyButton
+                md
+                primary
+                onPress={() => navigate('CheckoutNavigator')}>
+                <Text style={styles.buttonText}>Checkout</Text>
+              </EasyButton>
             </Right>
           </View>
         </Container>
@@ -129,6 +134,12 @@ const styles = StyleSheet.create({
     paddingRight: 25,
     height: 70,
     width: width / 1.2,
+  },
+  buttonText: {
+    color: 'white',
+    textTransform: 'uppercase',
+    letterSpacing: 1.5,
+    fontSize: 12,
   },
 })
 

@@ -1,6 +1,6 @@
 // Products
 ### Get products
-GET http://localhost:5000/api/v1/products?categories=5ff1e2bf40a9e61a74269720,5ff1dbd8c871e8157466c892
+GET http://localhost:5000/api/v1/products
 
 ### Get product count
 GET http://localhost:5000/api/v1/products/count
@@ -143,7 +143,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjJiNGJmN
 GET http://localhost:5000/api/v1/users
 
 ### Get user
-GET http://localhost:5000/api/v1/users/5ff2b1196a3d1b10a077cffc
+GET http://localhost:5000/api/v1/users/5ff2b4bf457e381e288fd28d
 
 ### Get user count
 GET http://localhost:5000/api/v1/users/count
@@ -153,16 +153,11 @@ POST http://localhost:5000/api/v1/users
 Content-Type: application/json
 
 {
-    "name": "john doe",
-    "email": "johndoe@gmail.com",
-    "password": "johndoe",
+    "name": "user 3",
+    "email": "user3@gmail.com",
+    "password": "user3",
     "phone": "089694624298",
-    "isAdmin": false,
-    "street": "jl. bardan nadi",
-    "apartment": "desa pasir panjang",
-    "zip": "012345",
-    "city": "mempawah",
-    "country": "indonesia"
+    "isAdmin": false
 }
 
 ### Update user
